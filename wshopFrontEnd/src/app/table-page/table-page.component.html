@@ -1,0 +1,411 @@
+<div class="content-body" id='mian' *ngIf="!tableDataService.showUpdatePage">
+    <!--<div class="input-form">
+        <input placeholder="input columns size" type="text"
+               [ngClass]="{'err-input':inputErr,'input-text':!inputErr}"
+               [(ngModel)]="tableDataService.addColumnText" (input)="setColumn()"/>
+        <input type="text" class="input-text" [(ngModel)]="tableDataService.search"
+               (keydown.enter)="onSearch()"/>
+        <button class="button button-search" (click)="onSearch()">search</button>
+    </div>
+
+        <div class="box">
+        <app-filter-box></app-filter-box>
+        <div class="shadow box-item ">
+            <p-multiSelect [options]="columns" [(ngModel)]="_selectedColumns" optionLabel="header"
+                           selectedItemsLabel=" {0} columns selected"
+                           [style]="{minWidth:'200px'}"
+                           placeholder="Choose Columns"></p-multiSelect>
+        </div>
+
+    </div>
+    -->
+    <p-dialog header="{{'page.filters' | translate}}"
+              [style]="{minWidth:'300px',minHeight:'500px',width:'400px'}"
+              [(visible)]="displayMinSizeDialog" [resizable]="false" responsive="false">
+        <div class="filter-panel-min-size">
+            <app-work-period-filter
+                    class="minHeightFilter"
+                    (onSuggest)="updateData()"
+                    [minSizeResolution]="true"
+                    (click)="confirmOnFilter($event)"
+            ></app-work-period-filter>
+            <app-detail-filter
+                    [minSizeResolution]="true"
+                    (onSuggest)="updateData()"
+                    (click)="confirmOnFilter($event)"
+                    class="minHeightFilter"
+            ></app-detail-filter>
+            <app-work-item-filter-page
+                    [minSizeResolution]="true"
+                    (onSuggest)="updateData()"
+                    class="minHeightFilter"
+                    (click)="confirmOnFilter($event)"
+                    *ngIf="!filterService.fixDataSelect"
+            ></app-work-item-filter-page>
+            <app-work-filter
+                    [minSizeResolution]="true"
+                    class="minHeightFilter"
+                    *ngIf="filterService.fixDataSelect"
+                    (onSuggest)="updateData()"
+                    (click)="confirmOnFilter($event)"
+            ></app-work-filter>
+            <app-work-status-filter
+                    [minSizeResolution]="true"
+                    class="minHeightFilter"
+                    [disabled]="stateFilterDisable" [onlyField]="true"
+                    (onSuggest)="updateData()"
+                    (onClear)="updateData()"
+                    (click)="confirmOnFilter($event)"
+            ></app-work-status-filter>
+
+        </div>
+
+
+        <!--        <p-footer class="footer-dialog">-->
+        <!--            <button pRipple type="button" (click)="cancelFilter()" style="margin-right: 15%;margin-left:10%" pButton-->
+        <!--                    class="p-button-danger"-->
+        <!--                    [label]="'page.clear' | translate" icon="pi pi-times" label="delete"></button>-->
+        <!--            <button pRipple type="button" (click)="updateData()" style="margin-left:15%;margin-right:10% " pButton-->
+        <!--                    icon="pi pi-check"-->
+        <!--                    [label]="'page.confirm' | translate"></button>-->
+
+        <!--        </p-footer>-->
+    </p-dialog>
+    <p-dialog header="{{'page.filters' | translate}}"
+              [style]="{minWidth:'29rem',minHeight:'500px',width:'25rem'}"
+              [(visible)]="display" [resizable]="false" responsive="false">
+        <div class="filter-panel">
+
+            <app-date-filter class="filter"></app-date-filter>
+            <app-customer-filter class="filter"></app-customer-filter>
+            <app-employee-filter class="filter"></app-employee-filter>
+            <app-payed-filter class="filter"></app-payed-filter>
+            <app-state-filter class="filter" [onlyField]="false"></app-state-filter>
+        </div>
+        <p-footer class="footer-dialog">
+            <button
+                    pRipple type="button"
+                    (click)="cancelFilter()"  pButton
+                    class="p-button-danger"
+                    [label]="'page.clear' | translate" icon="pi pi-times" label="delete"></button>
+            <button
+                    pRipple type="button"
+                    (click)="updateData()"  pButton
+                    icon="pi pi-check"
+                    [label]="'page.confirm' | translate"></button>
+        </p-footer>
+    </p-dialog>
+    <p-confirmPopup [visible]="confirmDisplay"></p-confirmPopup>
+    <!--    <p-contextMenu-->
+    <!--        #cm-->
+    <!--        [hidden]="!contextMenuActionDisable"-->
+    <!--        [model]="items"></p-contextMenu>-->
+
+    <!--  currentPageReportTemplate="{{'page.TableNumLabel' | translate}}"
+               [rows]="100" [showCurrentPageReport]="true" [rowsPerPageOptions]="[20,30,50,100]"
+              [paginator]="true" -->
+    <!--    [virtualRowHeight]="contextMenuActionDisable?50:5"-->
+
+    <div [style]="{height: '88vh',background: '#f4f4f4',width: '100%'}">
+        <p-table
+                styleClass="p-datatable-responsive-demo" [(contextMenuSelection)]="contextSelectItem"
+                [columns]="_selectedColumns" [value]="tableDataService.mainData" [scrollable]="true"
+                [loading]="apiService.isLoadingData"
+                columnResizeMode="expand"
+                [rows]="100" scrollHeight="flex"
+                [virtualScroll]="true"
+                [virtualRowHeight]="contextMenuActionDisable?(screenWidth>800?50:500):5"
+                style="border-color: #f4f4f4;"
+                [style]="{borderColor:'#f4f4f4',zIndex:'0'}"
+                [resizableColumns]="true" selectionMode="single"
+                dataKey="id">
+            <ng-template pTemplate="caption" style="border-color: #f4f4f4">
+                <div class="table-header" [style]="{borderColor:'#f4f4f4',height:screenWidth<800?'15px':'35px'}">
+                    <div class="p-d-flex  p-flex-md-row">
+                        <div class="p-mb-4 p-mr-4" [style]="{width:screenWidth<800?'70%':'20%'}">
+                            <h3 *ngIf="screenWidth>800"> {{ title }}</h3>
+                            <h5 style="position: relative;top:-10px" *ngIf="screenWidth<800"> {{ title }}</h5>
+                        </div>
+                        <div *ngIf="screenWidth>800" class="p-mb-6 p-mr-6" style="width: 20%">
+                        </div>
+                        <div *ngIf="!hideButtonBar && screenWidth<800" style="width: 20%"
+                             class="filter-button-min-size-resolution" >
+                            <button
+                                    *ngIf="standardFilterDisable"
+                                    pButton type="button"
+                                    (click)="showDialogMinSize()"
+                                    class="p-button-secondary"
+                                    pRipple
+                                    icon="pi pi-filter size-icon-table"
+                            >
+                            </button>
+
+                            <button
+                                    *ngIf="!standardFilterDisable"
+                                    pButton type="button"
+                                    (click)="showDialog()"
+                                    class="p-button-secondary"
+                                    pRipple
+                                    icon="pi pi-filter size-icon-table"
+                            >
+                            </button>
+                        </div>
+                        <div *ngIf="!standardFilterDisable && !hideButtonBar" class="p-mb-2 p-mr-2"
+                             style=" position: relative;top:-2px">
+                            <button
+                                    pButton type="button"
+                                    (click)="showDialog()"
+                                    class="p-button-secondary"
+                                    pRipple
+                                    icon="pi pi-filter size-icon-table"
+                            >
+                            </button>
+                        </div>
+                        <div *ngIf="standardFilterDisable && !hideButtonBar" class="p-mb-2 p-mr-2"
+                             style="width: 300px;">
+                            <app-work-period-filter
+                                    (onSuggest)="updateData()"
+                                    (click)="confirmOnFilter($event)"
+                            ></app-work-period-filter>
+                        </div>
+                        <div *ngIf="standardFilterDisable && !hideButtonBar" class="p-mb-2 p-mr-2"
+                             style="width: 300px; ">
+                            <app-detail-filter
+                                    (onSuggest)="updateData()"
+                                    (click)="confirmOnFilter($event)"
+                            ></app-detail-filter>
+                        </div>
+                        <div
+                                *ngIf="standardFilterDisable && !hideButtonBar && !filterService.fixDataSelect"
+                                class="p-mb-2 p-mr-2"
+                                style="width: 300px; ">
+                            <app-work-item-filter-page
+                                    (onSuggest)="updateData()"
+                                    (click)="confirmOnFilter($event)"
+                            ></app-work-item-filter-page>
+                        </div>
+                        <div
+                                *ngIf="standardFilterDisable && !hideButtonBar && filterService.fixDataSelect"
+                                class="p-mb-2 p-mr-2"
+                                style="width: 300px;">
+                            <app-work-filter
+                                    (onSuggest)="updateData()"
+                                    (click)="confirmOnFilter($event)"
+                            ></app-work-filter>
+                        </div>
+
+                        <div *ngIf="standardFilterDisable && !hideButtonBar"
+                             class="p-mb-2 p-mr-2"
+                             style="width: 300px; ">
+                            <app-work-status-filter
+                                    [disabled]="stateFilterDisable" [onlyField]="true"
+                                    (onSuggest)="updateData()"
+                                    (onClear)="updateData()"
+                                    (click)="confirmOnFilter($event)"
+                            ></app-work-status-filter>
+                        </div>
+                        <div *ngIf="!standardFilterDisable && !hideButtonBar"
+                             class="p-mb-2 p-mr-2"
+                             style="width: 300px; ">
+                            <app-period-date-filter
+                                    [onlyField]="true" (onSuggest)="updateData()"
+                                    (onClear)="updateData()"
+                                    (click)="confirmOnFilter($event)"
+                            ></app-period-date-filter>
+                        </div>
+                        <div *ngIf="!standardFilterDisable && !hideButtonBar"
+                             class="p-mb-2 p-mr-2"
+                             style="width: 300px;">
+                            <app-state-filter
+                                    [disabled]="stateFilterDisable"
+                                    [onlyField]="true"
+                                    (onSuggest)="updateData()"
+                                    (onClear)="updateData()"
+                                    (click)="confirmOnFilter($event)"
+                            ></app-state-filter>
+                        </div>
+                        <div
+                                *ngIf="!standardFilterDisable && !hideButtonBar"
+                                class="p-mb-2 p-mr-2"
+                                style="width: 300px; ">
+
+                            <app-substring-filter
+                                    (click)="confirmOnFilter($event)"
+                                    (onSuggest)="updateData()"
+                            ></app-substring-filter>
+                        </div>
+                        <div
+                                *ngIf="!hideButtonBar" class="p-mb-2 p-mr-2"
+                                style="width: 100px; position: relative;top:-2px">
+                            <button
+                                    pButton type="button"
+                                    (click)="downloadExel()"
+                                    class="p-button-secondary"
+                                    pRipple
+                                    icon="pi pi-file-excel size-icon-table "
+                            >
+                            </button>
+
+                        </div>
+                        <div *ngIf="  !hideButtonBar" class="p-mb-2 p-mr-2"
+                             style=" position: relative;top:-2px;">
+                            <p-multiSelect
+                                    [options]="columns"
+                                    [(ngModel)]="_selectedColumns"
+                                    optionLabel="header"
+                                    [showHeader]="false"
+                                    id="multisect"
+                                    selectedItemsLabel=""
+                                    defaultLabel=""
+                                    (onClick)="chooseColumn()"
+                                    dropdownIcon="pi pi-microsoft size-icon"
+                                    scrollHeight="700px"
+                                    [style]="{width:'38px',height:'40px',position:'relative',background:'#f4f4f4',borderColor:'#f4f4f4'}"
+                                    placeholder=""></p-multiSelect>
+                        </div>
+                    </div>
+
+
+                </div>
+            </ng-template>
+            <ng-template pTemplate="colgroup">
+                <colgroup>
+                    <col *ngIf="screenWidth>800" style="width:30px">
+                    <col style="width:30px" *ngIf="!contextMenuActionDisable && screenWidth>800">
+                    <col *ngIf=" screenWidth<800" style="width:350px">
+                    <col *ngFor="let col of columns" style="{{'width:'+(screenWidth>800?col.width:1)+'px'}}">
+                    <!--                    <col *ngIf="buttonActionDisable" style="width:150px">-->
+                    <col *ngIf="contextMenuActionDisable " style="width:100px">
+
+                </colgroup>
+            </ng-template>
+            <ng-template pTemplate="header" let-columns>
+                <tr style="border-color: #f4f4f4" [style]="{borderColor:'#f4f4f4'}">
+                    <th
+                            *ngIf="screenWidth>800" class="icon"
+                            style="width:2rem;border-color: #f4f4f4"
+                            [style]="{borderColor:'#f4f4f4', fontSize:'12px'}">
+
+                    </th>
+                    <th
+                            class="icon"
+                            style="width:2rem;border-color: #f4f4f4"
+                            *ngIf="!contextMenuActionDisable && screenWidth>800"
+                            [style]="{borderColor:'#f4f4f4', fontSize:'15px'}">
+
+                    </th>
+                    <th
+                            *ngFor="let col of columns"
+                            pResizableColumn [pSortableColumn]="col.header"
+                            style="border-color: #f4f4f4" [style]="{borderColor:'#f4f4f4', fontSize:'12px'}">
+                        {{col.header}}
+                        <p-sortIcon [field]="col.header"></p-sortIcon>
+                    </th>
+                    <th
+                            *ngIf="contextMenuActionDisable"
+                            style="width:2rem;border-color: #f4f4f4"
+                            [style]="{borderColor:'#f4f4f4', fontSize:'12px'}">
+
+                    </th>
+                    <!--                    <th style="width:2rem;border-color: #f4f4f4" *ngIf="buttonActionDisable"-->
+                    <!--                        [style]="{borderColor:'#f4f4f4', fontSize:'12px'}"></th>-->
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="loadingbody" let-columns="columns">
+                <tr style="height:34px">
+                    <td *ngFor="let col of columns">
+                    </td>
+                    <td>
+                    </td>
+                    <td *ngIf="!contextMenuActionDisable">
+
+                    </td>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-rowData let-columns="columns" let-index="rowIndex">
+
+                <tr [pReorderableRow]="index"
+                    [pContextMenuRow]="rowData">
+                    <td
+                            class="icon"
+                            [style]="{borderColor:'#f4f4f4' , fontSize:'12px'}">
+                        <span class=" pi pi-bars"
+                              pReorderableRowHandle></span>
+                    </td>
+                    <td
+                            class="icon"
+                            [style]="{borderColor:'#f4f4f4' , fontSize:'14px'}"
+                            *ngIf="!contextMenuActionDisable">
+                                            <span style="cursor: pointer !important;" *ngIf="rowData.Comment!==''"
+                                                  class="pi pi-info-circle" pReorderableRowHandle
+                                                  (click)="confirm($event,rowData)"></span>
+                    </td>
+                    <td
+                            *ngFor="let col of columns"
+                            class="ui-resizable-column" pResizableColumn
+                            [style]="{borderColor:'#f4f4f4' , fontSize:'12px'}">
+                        <span class="p-column-title">{{col.header}}</span>
+                        <span *ngIf="contextMenuActionDisable">
+                            {{rowData[col.field]}}
+                        </span>
+                        <span *ngIf="!contextMenuActionDisable">
+                    <span *ngIf="(rowData[col.field]==='yes' || rowData[col.field]==='1') ">
+                        <i class="pi pi-check"></i>
+                        </span>
+                        <span *ngIf="rowData[col.field]==='no' || rowData[col.field]==='0'"></span>
+                        <span *ngIf="col.field==='Долг' || col.field==='Раб.' || col.field==='З/ч' || col.field==='Всего'"
+                              style="padding-left: 50%"> </span>
+                        <span *ngIf="!(rowData[col.field]==='yes' || rowData[col.field]==='1') && !(rowData[col.field]==='no' || rowData[col.field]==='0')">
+                                            {{rowData[col.field]}}
+                    </span>
+                        </span>
+                    </td>
+                    <td *ngIf="contextMenuActionDisable && !masterWindowsSelectDisable"
+                        [style]="{borderColor:'#f4f4f4' , fontSize:'12px'}">
+                        <button
+                                pRipple pButton type="button"
+                                [disabled]="rowData['статус']==='выполняется'"
+                                class=" p-button-success"
+                                (click)="contextAction(rowData['ID работы'],rowData['статус'])"
+                                style="min-width: 8rem"
+                                label="начать" icon="pi pi-play"></button>
+                    </td>
+                    <td
+                            *ngIf="contextMenuActionDisable && masterWindowsSelectDisable"
+                            [style]="{borderColor:'#f4f4f4' , fontSize:'12px'}">
+                        <button
+                                pRipple pButton type="button"
+                                class=" p-button-danger"
+                                (click)="contextActionEnd(rowData['ID работы'])"
+                                style="min-width: 8rem"
+                                label="завершить"></button>
+                    </td>
+                    <!--                    <td [style]="{borderColor:'#f4f4f4' , fontSize:'14px',zIndex:'2'}" *ngIf="buttonActionDisable">-->
+
+                    <!--                        <app-button-list-action></app-button-list-action>-->
+
+                    <!--                    </td>-->
+                </tr>
+
+            </ng-template>
+            <ng-template pTemplate="emptymessage">
+                <tr>
+                    <td [colSpan]="_selectedColumns.length">No records found</td>
+                </tr>
+                <div style="height: 680px"></div>
+            </ng-template>
+        </p-table>
+    </div>
+    <!--
+    <p-confirmDialog [style]="{width: '30vw'}" [baseZIndex]="10000"></p-confirmDialog>
+    <div class="button-panel">
+        <button type="button" (click)="deleteData()" pButton class="ui-button-danger"
+                icon="pi pi-trash" [disabled]="selectRow.id<=startData.length" label="delete"></button>
+        <button (click)="tableDataService.showUpdatePage=true" type="button" pButton icon="pi pi-plus"
+                label="create"></button>
+        <button type="button" [disabled]="selectRow.id<=startData.length" pButton icon="pi pi-pencil"
+                class="ui-button-success" (click)="changeData()" label="change"></button>
+    </div>-->
+
+</div>
+<app-create-add *ngIf="tableDataService.showUpdatePage"></app-create-add>

@@ -1,0 +1,39 @@
+<p-menubar id="openNav"
+           [model]="(orderService.getUserValidate() &&
+            apiService.getUserData()!==null &&
+            apiService.getUserData()!==undefined)?(screenWidth<800? (apiService.adminMode?itemsMinSizeAdmin:itemsMinSizeUser): items):itemsNoLogin"
+           [style]="{zIndex:'999',background:'#f4f4f4',
+minWidth:'100%', height:'53px',position:'fixed',left:'0px',top:'0px'} "
+>
+    <span style="position: relative; top:-10px;left: -10px">BetaVersion 1.03</span>
+    <p-button *ngIf="apiService.getUserData()!==null && apiService.getUserData()!==undefined"
+              type="text" [style]="{minWidth:'40px',minHeight:'40px',
+                  background:'#DC143C', borderColor:'#DC143C'}"
+              (click)="quit()" icon="pi pi-fw  pi-power-off"
+              class="p-button-success p-button-text"
+              [label]=""></p-button>
+    <p-button *ngIf="apiService.getUserData()===null || apiService.getUserData()===undefined"
+              type="text" [style]="{minWidth:'40px',minHeight:'40px'}"
+              (click)="quit()" icon="pi pi-fw pi-user"
+              class="p-button-success p-button-text"
+              [label]=""></p-button>
+</p-menubar>
+
+
+
+<div class="side-menu" style="display:none;" id="mySidebar">
+
+    <h3 style="position: relative; left: 10px">{{'page.menu' | translate}}</h3>
+    <hr class="hr-style" style="z-index: 2;"/>
+
+    <app-listbox
+            id="mySidebarList"
+            style="position:relative;top:-20px; z-index: 9999"
+            [options]="apiService.adminMode?appNavigate.optionsAdmin:appNavigate.optionsUser"
+            [selected]="cities1"
+    ></app-listbox>
+
+</div>
+
+<br/>
+<br/>

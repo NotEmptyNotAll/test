@@ -1,0 +1,206 @@
+thead tr th {
+    position: relative;
+}
+
+.loading-text {
+    display: block;
+    background-color: #f1f1f1;
+    min-height: 19px;
+    animation: pulse 1s infinite ease-in-out;
+    text-indent: -99999px;
+    overflow: hidden;
+}
+.table-style {
+
+    background: #f4f4f4 !important;
+    border-color: #f4f4f4 !important;
+    font-size: 3px !important;
+}
+.ui-datatable-tablewrapper{
+    min-height: 150px !important;
+}
+span.ui-column-resizer {
+    display: block;
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 0;
+    width: 8px;
+    height: 100%;
+    padding: 0;
+    cursor: col-resize;
+    border: 1px solid transparent;
+}
+
+
+:host {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    font-size: 14px;
+    color: #333;
+    box-sizing: border-box;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.content-body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+tr:nth-child(even) {
+    background-color: #f2f2f2
+}
+
+table {
+    border-collapse: collapse;
+    text-align: left;
+}
+
+p-table {
+    text-align: left;
+    width: 98vw;
+}
+
+.shadow {
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5); /* Параметры тени */
+}
+
+.shadow:hover {
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Параметры тени */
+}
+
+.box-item {
+    border-radius: 1px;
+    padding: 20px;
+    margin: 0px 50px 20px 50px;
+}
+
+.box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.err-input {
+    font: 1.2em "Fira Sans", sans-serif;
+    color: white;
+    border-radius: 3px;
+    padding: 8px 12px;
+    margin: 10px;
+    width: auto;
+    box-sizing: border-box;
+    -webkit-transition: 0.5s;
+    transition: 0.5s;
+    outline: none;
+    border: 3px solid lightcoral;
+    background: lightcoral;
+}
+
+
+.button-search {
+    background-color: grey;
+
+}
+
+
+.button-panel {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.button-panel button {
+    font-size: 1em;
+    padding: 5px;
+    margin: 15px;
+}
+
+.button-create {
+    width: 100px;
+    background: #409EFF;
+}
+
+.button-delete {
+    width: 100px;
+    background: #F56C6C;
+}
+
+.button-add {
+    width: 100px;
+    background: #67C23A;
+}
+
+.button:hover {
+    opacity: 1
+}
+.content-dialog{
+    display: flex;
+    flex-direction: column;
+}
+.filter-panel-min-size{
+    display: flex;
+    flex-direction: column;
+    min-height: 600px;
+    min-width: 200px;
+    height: auto;
+
+}
+.filter-button-min-size-resolution{
+
+    position: absolute;
+    right: -20px;
+    top:5px;
+}
+.filter-panel {
+    display: inline-flex;
+    flex-wrap: wrap;
+    justify-content: center;
+
+    flex-direction: row;
+    width: 100%;
+    min-height: 600px;
+    height: auto;
+}
+.filter{
+    display: inline-flex;
+}
+.panel-button-menu{
+    z-index:10000 !important
+}
+.button {
+    border: none;
+    color: white;
+    padding: 10px 15px;
+    text-align: center;
+    font-size: 16px;
+    margin: 10px;
+    opacity: 0.6;
+    transition: 0.3s;
+    display: inline-block;
+    text-decoration: none;
+    cursor: pointer;
+    border-radius: 3px;
+}
+.fast-filter{
+    position: absolute;
+    height: 35px;
+    margin: 10px;
+    top: 0px
+}
+.footer-dialog{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-content: center;
+    align-self: flex-end;
+
+    width: 100%;
+    height: 40px;
+}
+
+.footer-dialog>button{
+    margin-right: 5%;
+    margin-top: 1%;
+    margin-left:5%;
+}

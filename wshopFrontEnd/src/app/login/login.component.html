@@ -1,0 +1,54 @@
+
+<app-master-start-window *ngIf="!apiService.isLoading"
+                         [display]="masterWindowVisible"
+                         (onCancelAction)="quit()"
+                         (onConfirm)="moveToMasterSelectWindows()"
+                         title="НАЧАТЬ ЗМІНУ" textOnConfirm="ПОЧАТИ" textOnCancel="СКАСУВАТИ"
+></app-master-start-window>
+<div class="login-page" *ngIf="!masterWindowVisible">
+    <div class="login-form shadow  ">
+        <!--<img src="assets/image/login-images.png"/>
+        <hr width="100%"/>-->
+        <div class="login-row">
+
+            <span style="width: 90%">
+            <p-dropdown
+                    autoWidth="false" [style]="{'minWidth':'100%'}"
+                    [showClear]="true" [placeholder]="'page.SelectName' | translate"
+                    [options]="users" [(ngModel)]="selectedUser"
+                    [filter]="true" optionLabel="name"></p-dropdown>
+            </span>
+        </div>
+
+
+        <div class="login-row">
+            <span style="width: 90%">
+            <input type="password" [(ngModel)]="password"
+                   (keydown.enter)="login()"
+                   [disabled]="selectedUser===null || selectedUser===undefined"
+                   [style]="{'minWidth':'100%'}"
+                   [placeholder]="'page.password' | translate"
+                   [feedback]="false" pPassword/>
+            </span>
+        </div>
+<!--        <button pRipple pButton type="button" (click)="getUsers()"-->
+<!--                class=" p-button-danger"-->
+<!--                style="min-width: 8rem"-->
+<!--                [label]="'page.cancel' | translate" icon="pi pi-times"></button>-->
+
+
+        <div class="login-row">
+            <button pRipple pButton type="button" (click)="cancel()"
+                    class=" p-button-danger"
+                    style="min-width: 8rem"
+                    [label]="'page.cancel' | translate" icon="pi pi-times"></button>
+
+            <button pRipple pButton type="button" (click)="login()"
+                    class=" p-button-success"
+                    style="min-width: 8rem"
+                    [disabled]="selectedUser===null || selectedUser===undefined"
+                    [label]="'page.login' | translate" icon="pi pi-check"></button>
+
+        </div>
+    </div>
+</div>

@@ -1,0 +1,56 @@
+<!--<div class="filter-component">-->
+<!--    <p class="title">{{'loginPage.datePeriod' | translate}}</p>-->
+<!--    <p-dropdown (onClick)="changePeriod()" style="margin: 5px 5px 10px;position: relative;bottom: 20px"-->
+<!--                [options]="periods" [(ngModel)]="period" optionLabel="name">-->
+
+
+<!--    </p-dropdown>-->
+<!--    <div  style="position: relative;top:-10px; display: flex;flex-direction: row;justify-content: center;align-content: center">-->
+<!--        <p-radioButton name="groupname" inputId="val1"  [value]="false"-->
+<!--                       [(ngModel)]="isCloseDate" style="margin-right: 5%"></p-radioButton>-->
+<!--        <label for="val1">відкр.</label>-->
+<!--        <p-radioButton name="groupname" [value]="true" inputId="val2"-->
+<!--                       [(ngModel)]="isCloseDate" style="margin-right: 5%;margin-left: 5%"></p-radioButton>-->
+<!--        <label for="val2">закр.</label>-->
+
+<!--    </div>-->
+<!--</div>-->
+<div *ngIf="onlyField" class="p-fluid  p-grid p-form grid"  >
+    <div class="p-field p-col-36 p-md-12">
+        <p-dropdown (onChange)="changePeriod()"
+                    [disabled]="filterPeriodService.disableFastFiled"
+                    placeholder="{{'page.period' | translate}}"
+                    [options]="fastPeriods" [(ngModel)]="filterPeriodService.periodFastFilterData"
+                    optionLabel="name">
+        </p-dropdown>
+    </div>
+</div>
+<div class="p-field p-col-12 p-md-12  " style="width: 25rem"   *ngIf="!onlyField"
+>
+
+<span class="p-float-label ">
+
+            <p-dropdown (onChange)="changePeriod()"
+                        class="standard-filter-dropdown"
+                        inputId="{{'page.period' | translate}}"
+                        [options]="periods" [(ngModel)]="period"
+                        optionLabel="name">
+            </p-dropdown>
+    <label for="dropdown">{{'page.period' | translate}}</label>
+            </span>
+</div>
+<!--<div *ngIf="!onlyField" class="filter-component">
+    <div class="white-line"></div>
+    <p class="title" >{{'loginPage.datePeriod' | translate}}</p>
+    <div class="filter-body">
+
+    <div class="p-fluid  p-grid p-formgrid" >
+        <div class="p-field p-col-36 p-md-12">
+            <p-dropdown (onClick)="changePeriod()" [options]="periods" [(ngModel)]="period"
+                        placeholder="{{'loginPage.datePeriod' | translate}}" optionLabel="name"  [showClear]="true">
+            </p-dropdown>
+
+        </div>
+    </div>
+    </div>
+</div>-->

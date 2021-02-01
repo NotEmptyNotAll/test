@@ -1,0 +1,17 @@
+<div *ngIf="!minSizeResolution" class="p-fluid  p-grid p-form grid" style="width: 300px">
+    <div class="p-field p-col-36 p-md-12">
+        <p-dropdown *ngIf="onlyField"
+                    (onChange)="changeState()"  style="width: 300px" [showClear]="true"
+                    [options]="states"
+                    placeholder="статус"
+                    [(ngModel)]="state" optionLabel="name"></p-dropdown>
+    </div>
+</div>
+
+<p-dropdown *ngIf="minSizeResolution"
+            class="min-size-input"
+            (onChange)="changeState()"   [showClear]="true"
+            [options]="states"
+            [style]="{width: '100%'}"
+            placeholder="статус"
+            [(ngModel)]="state" optionLabel="name"></p-dropdown>

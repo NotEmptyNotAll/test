@@ -1,0 +1,11 @@
+<app-menu-bar></app-menu-bar>
+<div style="position: absolute;top:53px;left: 0px;height: 6px;width: 100%">
+<p-progressBar mode="indeterminate" *ngIf="apiService.barLoading" [style]="{color:'chocolate','height': '6px'}"></p-progressBar>
+</div>
+<div id="main">
+
+    <router-outlet></router-outlet>
+
+</div>
+<app-loading-spiner *ngIf="apiService.isLoading"></app-loading-spiner>
+<p-toast></p-toast>

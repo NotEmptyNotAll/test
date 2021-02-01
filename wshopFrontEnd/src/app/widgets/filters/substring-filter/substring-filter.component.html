@@ -1,0 +1,20 @@
+<!--<div class="filter-component">-->
+<!--    <h3 class="title">{{'loginPage.datePeriod' | translate}}</h3>-->
+
+<!--    <input type="text"  style="margin: 5px 5px 10px;-->
+<!--    position: relative;bottom: 20px"-->
+<!--           (ngModelChange)="onChang()"  [(ngModel)]=" sunString" pInputText/>-->
+<!--</div>-->
+
+<div class="p-fluid  p-grid p-form grid">
+    <div class="p-field p-col-36 p-md-12">
+        <span class="p-input-icon-left">
+
+<input type="text"
+       (change)="onChang()"
+       placeholder="{{'page.search' | translate}}"
+       [disabled]="substringService.disableFastFiled"
+       [(ngModel)]="substringService.substringFastFilterData" pInputText/>
+    </span>
+    </div>
+</div>

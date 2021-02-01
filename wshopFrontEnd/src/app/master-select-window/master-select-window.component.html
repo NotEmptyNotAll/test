@@ -1,0 +1,11 @@
+<!--<div style="background: #F56C6C">-->
+<!--    <p>ЗНАХОДИТЬСЯ В РОЗРОБЦІ</p>-->
+<!--</div>-->
+<app-table-page [startData]="data" title="{{'page.work' | translate}}"
+                [mainColumn]="mainColumn" [stateFilterDisable]="true"
+                (onUpdateData)="onUpdate()"
+                [confirmDisplay]="false"
+                (contextMenuActionUpdateData)="updateData()"
+                [masterWindowsSelectDisable]="false"
+                [buttonItems]="buttItem" [standardFilterDisable]="true"
+                [contextMenuActionDisable]="true" *ngIf="data!=null"></app-table-page>
